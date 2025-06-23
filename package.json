@@ -1,0 +1,24 @@
+{
+  "name": "csis228-seg-summer",
+  "version": "1.0.0",
+  "description": "CRUD Express/Nodejs Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charbelfakhry/csis228-seg-summer.git"
+  },
+  "keywords": [
+    "CRUDE",
+    "Express",
+    "Nodejs"
+  ],
+  "author": "SEG",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charbelfakhry/csis228-seg-summer/issues"
+  },
+  "homepage": "https://github.com/charbelfakhry/csis228-seg-summer#readme"
+}
