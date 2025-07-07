@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const AppError = require('../utils/AppError');
 class UserRepository {
 
     constructor() {
@@ -14,10 +15,7 @@ class UserRepository {
             const [rows] = await db.query('SELECT * FROM users');
             return rows;
         } catch (error) {
-            console.error('Error fetching all users:', error);
-            // propagate the error to be handled by the 
-            // caller
-            throw error;
+            throw new AppError('Database Error fetching all users', 500);
         }
     }
 
@@ -32,9 +30,7 @@ class UserRepository {
             const [rows] = await db.query('SELECT * FROM users WHERE user_id = ?', [id]);
             return rows[0];
         } catch (error) {
-            console.error('Error fetching user by ID:', error);
-            // propagate the error to be handled by the caller
-            throw error;
+            //throw new AppError(`Database Error fetching user with ID ${id}`, 500);
         }
     }
 
@@ -45,8 +41,7 @@ class UserRepository {
             console.log(result.insertId);
             return { id: result.insertId, ...user };
         } catch (error) {
-            console.error('Error adding user:', error);
-            throw error;
+            throw new AppError('Database Error adding user', 500);
         }
     }
 
@@ -56,8 +51,7 @@ class UserRepository {
                 'UPDATE users SET name = ?, email = ?, password = ? WHERE user_id = ?', [user.name, user.email, user.password, id]);
             return { id, ...user };
         } catch (error) {
-            console.error('Error updating user:', error);
-            throw error;
+            throw new AppError('Database Error updating user', 500);
         }
     }
 
@@ -67,8 +61,7 @@ class UserRepository {
             return { id };
 
         } catch (error) {
-            console.error('Error deleting user:', error);
-            throw error;
+            throw new AppError('Database Error deleting user', 500);
         }
     }
 

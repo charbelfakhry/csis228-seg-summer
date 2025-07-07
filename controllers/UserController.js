@@ -1,21 +1,23 @@
 const UserService = require('../services/UserService');
+const AppError = require('../utils/AppError');
 
 class UserController {
     constructor(){
         this.UserService = new UserService();
     }
 
-    async getAll(req, res){
+    async getAll(req, res, next){
         try{
             const users = await this.UserService.getAll();
             res.status(200).json(users);
         }catch(error) {
-            console.error('Error fetching all users:', error);
-            return res.status(500).send('Internal Server Error ' + error.message);
+            // console.error('Error fetching all users:', error);
+            // return res.status(500).send('Internal Server Error ' + error.message);
+            next(error);
         }
     }
 
-    async getById(req, res) {
+    async getById(req, res, next) {
         // error first handling
         if (!req.params.id) {
             return res.status(400).send('User ID is required');
@@ -28,12 +30,11 @@ class UserController {
                 res.status(404).send('User not found');
             }
         } catch (error) {
-            console.error('Error fetching user by ID:', error);
-            return res.status(500).send('Internal Server Error ' + error.message );
+            next(error);
         }
     }
 
-    async add(req, res) {
+    async add(req, res, next) {
         try {
             const user = req.body;
             console.log(user);
@@ -43,13 +44,12 @@ class UserController {
             const response = await this.UserService.add(user);
             res.status(201).json(response);
         } catch (error) {
-            console.error('Error adding user:', error);
-            return res.status(500).send('Internal Server Error ' + error.message);
+            next(error);
         }
     }
 
 
-    async update(req, res) {
+    async update(req, res, next) {
         if (!req.params.id) {
             return res.status(400).send('User ID is required');
         }
@@ -61,12 +61,11 @@ class UserController {
             const updatedUser = await this.UserService.update(req.params.id, user);
             res.status(201).json(updatedUser);
         } catch (error) {
-            console.error('Error updating user:', error);
-            return res.status(500).send('Internal Server Error ' + error.message);
+            next(error);
         }
     }
 
-    async delete(req, res) {
+    async delete(req, res, next) {
         if (!req.params.id) {
             return res.status(400).send('User ID is required');
         }
@@ -74,8 +73,7 @@ class UserController {
             await this.UserService.delete(req.params.id);
             res.status(204).send();
         } catch (error) {
-            console.error('Error deleting user:', error);
-            return res.status(500).send('Internal Server Error ' + error.message);
+            next(error);
         }
     }
 }
