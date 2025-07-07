@@ -7,6 +7,13 @@ const app = express();
 app.use(express.json());
 app.use('/api/users', userRoutes);
 
+
+// Handle 404 errors
+// app.all('*', (req, res, next) => {
+//     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+// });
+
+
 // Global error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -16,11 +23,6 @@ app.use((err, req, res, next) => {
         statusCode: status,
         message: err.message || 'Internal Server Error'
     });
-});
-
-// Handle 404 errors
-app.all('*', (req, res, next) => {
-    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
 

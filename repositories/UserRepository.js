@@ -30,7 +30,7 @@ class UserRepository {
             const [rows] = await db.query('SELECT * FROM users WHERE user_id = ?', [id]);
             return rows[0];
         } catch (error) {
-            //throw new AppError(`Database Error fetching user with ID ${id}`, 500);
+            throw new AppError(`Database Error fetching user with ID ${id}`, 500);
         }
     }
 
