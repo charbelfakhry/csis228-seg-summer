@@ -12,9 +12,9 @@ app.use('/api/auth', authRoutes);
 
 
 // Handle 404 errors
-// app.all('*', (req, res, next) => {
-//     next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
-// });
+app.all("/*all", (req, res,next) => {
+    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
 
 
 // Global error handling middleware
