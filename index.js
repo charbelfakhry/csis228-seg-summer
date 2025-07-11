@@ -1,11 +1,14 @@
 const express = require('express');
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 const AppError = require('./utils/AppError');
+require('dotenv').config();
 
 const app = express();
 
 app.use(express.json());
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 
 
 // Handle 404 errors

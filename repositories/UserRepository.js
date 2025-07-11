@@ -34,6 +34,15 @@ class UserRepository {
         }
     }
 
+    async getByEmail(email) {
+        try {
+            const [rows] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+            return rows[0];
+        } catch (error) {
+            throw new AppError(`Database Error fetching user with email ${email}`, 500);
+        }
+    }
+
     async add(user) {
         try {
             const [result] = await db.query(
@@ -64,6 +73,17 @@ class UserRepository {
             throw new AppError('Database Error deleting user', 500);
         }
     }
+
+    async create({ name, email, password, role = 'user' }) {
+        try {
+            const hash = await bcrypt.hash(password, 12);
+            const [result] = await db.query(
+                'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)', [name, email, hash, role]);
+            return { id: result.insertId, name, email, password: hash, role };
+        } catch (error) {
+            throw new AppError('Database Error creating user', 500);
+        }
+    }   
 
 }
 
